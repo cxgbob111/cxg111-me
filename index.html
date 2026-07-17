@@ -3,29 +3,33 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Bob Cheng's weekly development log: robotics market systems, sales operations, and the Robotics Hub." />
+  <meta name="description" content="Bob Cheng's weekly development log: robotics market systems, sales operations, applied AI and the Robotics Hub." />
   <title>Bob Cheng — Dev Log</title>
   <style>
     :root {
       color-scheme: light dark;
       --bg: #f4f1ea;
-      --surface: rgba(255,255,255,.78);
+      --surface: rgba(255,255,255,.80);
       --text: #18211d;
       --muted: #5f6a64;
       --line: #cfd5cf;
       --accent: #075d4b;
       --accent-soft: #dcece6;
+      --warn: #8a5b16;
+      --warn-soft: #f4e8cf;
       --shadow: 0 18px 60px rgba(24,33,29,.08);
     }
     @media (prefers-color-scheme: dark) {
       :root {
         --bg: #111713;
-        --surface: rgba(25,34,29,.86);
+        --surface: rgba(25,34,29,.88);
         --text: #eef4ef;
         --muted: #aebbb3;
         --line: #35433b;
         --accent: #70d8bb;
         --accent-soft: #173c31;
+        --warn: #f0bd69;
+        --warn-soft: #3a2b16;
         --shadow: 0 18px 60px rgba(0,0,0,.28);
       }
     }
@@ -49,9 +53,9 @@
     .nav-links { display: flex; gap: 18px; font-size: .92rem; }
     .hero { padding: 72px 0 48px; display: grid; grid-template-columns: 1.35fr .65fr; gap: 42px; align-items: end; }
     .eyebrow { color: var(--accent); font-size: .78rem; font-weight: 800; letter-spacing: .13em; text-transform: uppercase; }
-    h1 { margin: 12px 0 18px; max-width: 820px; font-size: clamp(2.6rem, 7vw, 5.9rem); line-height: .98; letter-spacing: -.065em; }
-    .lede { max-width: 720px; margin: 0; font-size: clamp(1.05rem, 2vw, 1.28rem); color: var(--muted); }
-    .week-card, .panel, article {
+    h1 { margin: 12px 0 18px; max-width: 850px; font-size: clamp(2.6rem, 7vw, 5.9rem); line-height: .98; letter-spacing: -.065em; }
+    .lede { max-width: 760px; margin: 0; font-size: clamp(1.05rem, 2vw, 1.28rem); color: var(--muted); }
+    .week-card, .panel, article, details {
       background: var(--surface);
       border: 1px solid var(--line);
       border-radius: 22px;
@@ -66,6 +70,10 @@
     .article-head { display: flex; justify-content: space-between; gap: 24px; align-items: start; border-bottom: 1px solid var(--line); padding-bottom: 28px; margin-bottom: 34px; }
     .article-head h2 { margin: 4px 0 0; font-size: clamp(1.8rem, 4vw, 3.3rem); letter-spacing: -.04em; line-height: 1.05; }
     .status { flex: 0 0 auto; padding: 7px 11px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-weight: 800; font-size: .76rem; letter-spacing: .05em; text-transform: uppercase; }
+    .metrics { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 12px; margin-bottom: 18px; }
+    .metric { padding: 18px; border: 1px solid var(--line); border-radius: 16px; background: var(--surface); }
+    .metric b { display: block; font-size: 1.8rem; letter-spacing: -.04em; line-height: 1.1; }
+    .metric span { color: var(--muted); font-size: .84rem; }
     .grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 18px; }
     .panel { padding: 24px; box-shadow: none; }
     .panel.wide { grid-column: 1 / -1; }
@@ -73,19 +81,23 @@
     ul, ol { margin: 0; padding-left: 1.25rem; }
     li + li { margin-top: 9px; }
     .matrix { display: grid; gap: 12px; }
-    .matrix-row { display: grid; grid-template-columns: 1.1fr .55fr 1.6fr; gap: 18px; padding: 15px 0; border-top: 1px solid var(--line); align-items: start; }
+    .matrix-row { display: grid; grid-template-columns: 1.05fr .55fr 1.65fr; gap: 18px; padding: 15px 0; border-top: 1px solid var(--line); align-items: start; }
     .matrix-row:first-child { border-top: 0; padding-top: 0; }
     .matrix-row strong { line-height: 1.35; }
     .matrix-row small { color: var(--muted); }
     .tag { display: inline-flex; width: fit-content; padding: 4px 9px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-size: .76rem; font-weight: 800; }
+    .tag.warn { background: var(--warn-soft); color: var(--warn); }
     .priority { counter-reset: priority; list-style: none; padding: 0; display: grid; gap: 14px; }
     .priority li { counter-increment: priority; position: relative; padding: 18px 18px 18px 58px; border: 1px solid var(--line); border-radius: 16px; }
     .priority li::before { content: counter(priority); position: absolute; left: 17px; top: 17px; width: 27px; height: 27px; border-radius: 50%; display: grid; place-items: center; background: var(--accent); color: var(--bg); font-weight: 900; font-size: .82rem; }
     .priority b { display: block; margin-bottom: 4px; }
     .closing { margin-top: 28px; padding: 22px 24px; border-left: 4px solid var(--accent); background: var(--accent-soft); border-radius: 4px 16px 16px 4px; }
+    details { margin-top: 24px; padding: 20px 24px; box-shadow: none; }
+    summary { cursor: pointer; font-weight: 800; }
+    details p { color: var(--muted); margin-bottom: 0; }
     footer { padding: 28px 0 50px; color: var(--muted); font-size: .88rem; display: flex; justify-content: space-between; gap: 18px; }
     @media (max-width: 800px) {
-      .hero, .grid { grid-template-columns: 1fr; }
+      .hero, .grid, .metrics { grid-template-columns: 1fr; }
       .hero { padding-top: 46px; }
       .article-head { display: grid; }
       .matrix-row { grid-template-columns: 1fr; gap: 7px; }
@@ -108,13 +120,13 @@
   <section class="hero shell" id="top">
     <div>
       <div class="eyebrow">Robotics · Market Systems · Applied AI</div>
-      <h1>Build the operating system, not only the opportunity.</h1>
+      <h1>Turn evidence into a conversion system.</h1>
       <p class="lede">A weekly record of practical progress across European robotics business development, sales systems, competitive intelligence, and the Robotics Hub.</p>
     </div>
     <aside class="week-card">
       <span>Latest entry</span>
-      <strong>Week 28 · 2026</strong>
-      <span>6–10 July 2026</span>
+      <strong>Week 29 · 2026</strong>
+      <span>13–17 July 2026</span>
     </aside>
   </section>
 
@@ -122,46 +134,59 @@
     <article>
       <div class="article-head">
         <div>
-          <div class="eyebrow">Weekly retrospective · 10 July 2026</div>
-          <h2>From scattered research to reusable commercial infrastructure</h2>
+          <div class="eyebrow">Weekly retrospective · 17 July 2026</div>
+          <h2>From research assets to an operating and conversion layer</h2>
         </div>
         <div class="status">Published</div>
+      </div>
+
+      <div class="metrics" aria-label="Weekly output metrics">
+        <div class="metric"><b>1</b><span>official product evidence deck added</span></div>
+        <div class="metric"><b>2</b><span>reusable commercial operating tools built</span></div>
+        <div class="metric"><b>3</b><span>active CRM opportunities under management</span></div>
+        <div class="metric"><b>1</b><span>new WRC interest submission captured</span></div>
       </div>
 
       <div class="grid">
         <section class="panel wide">
           <h3>What moved forward</h3>
           <ul>
-            <li>Converted competitor research into structured decision tools for full-size humanoids and wheeled mobile-manipulation platforms.</li>
-            <li>Defined a clearer European sales position: sell scoped pilot outcomes, compliance clarity, training, support, and measurable acceptance criteria—not a bare robot specification sheet.</li>
-            <li>Advanced the Robotics Hub from an idea toward an operating entity, with AI and repeatable digital workflows treated as foundational infrastructure.</li>
-            <li>Improved the lead-management direction by prioritising Europe and North America and identifying CRM data quality as an immediate scaling constraint.</li>
-            <li>Developed stronger event-led outreach logic around the World Robot Conference and China partner visits.</li>
+            <li>Closed several Y1 evidence gaps with an official English product presentation covering workflow scenarios, manipulation architecture, mobility, lift range, charging, navigation and indicative cycle-time claims.</li>
+            <li>Built a standalone Y1 executive ROI dashboard, turning the previous TCO logic into a tool that can support discovery, proposal framing and pilot economics.</li>
+            <li>Built a Priority Ledger interface to make sales focus, deadlines and completion status visible instead of leaving execution distributed across notes and conversations.</li>
+            <li>Defined clearer partner-policy guardrails for early-stage market development, official-status claims, local-language content and packaging localisation.</li>
+            <li>Advanced two live CRM opportunities during the week and captured a new inbound World Robot Conference interest submission through the HubSpot form.</li>
+            <li>Refined personal positioning around embodied-robotics commercialisation, European market entry and POC conversion.</li>
           </ul>
         </section>
 
-        <section class="panel" id="progress">
+        <section class="panel wide" id="progress">
           <h3>Matrix progress</h3>
           <div class="matrix">
             <div class="matrix-row">
-              <strong>Y1 / S2 competitor matrix</strong>
-              <span class="tag">Useful internally</span>
-              <small>Competitive landscape, EU price anchors, TCO logic, customer segments, and battlecards are structured. The limiting factor is now official UBTECH evidence, not additional desk research.</small>
+              <strong>Y1 evidence / competitor matrix</strong>
+              <span class="tag">Upgraded</span>
+              <small>The matrix is no longer dependent only on market proxies. Official product material now supports several core claims. Remaining gaps are approved EU pricing, CE and safety documents, warranty, SDK/API/ROS 2 clarity, and customer-grade deployment evidence.</small>
             </div>
             <div class="matrix-row">
-              <strong>DEX EU price matrix</strong>
-              <span class="tag">Research complete</span>
-              <small>Public EU pricing bands and direct research-platform anchors are mapped. It still needs approved DEX configuration, support scope, and customer-facing quotation rules.</small>
+              <strong>ROI / TCO matrix</strong>
+              <span class="tag">Tool built</span>
+              <small>The economic model has been converted into an interactive dashboard. It is ready for controlled internal use, but external use still requires approved price inputs and customer-specific labour, utilisation and integration assumptions.</small>
             </div>
             <div class="matrix-row">
               <strong>Lead / CRM operating matrix</strong>
-              <span class="tag">At risk</span>
-              <small>The process logic is clearer, but record volume and invalid data are crowding out execution. Cleaning and prioritisation must precede further imports.</small>
+              <span class="tag warn">Execution risk</span>
+              <small>Three active opportunities are recorded and two were updated this week. However, the deals still lack scheduled next-activity dates, while the task backlog is larger than the available execution capacity. The system needs triage, not more task creation.</small>
             </div>
             <div class="matrix-row">
               <strong>Robotics Hub operating matrix</strong>
-              <span class="tag">Foundation set</span>
-              <small>Mission, testbed entry model, funding leverage, and minimum digital-team direction are defined. The next gap is one integrated execution dashboard with owners, cadence, and proof of completion.</small>
+              <span class="tag">Structure set</span>
+              <small>The two-audience funnel, MVP website structure, assessment form, HubSpot mapping, POC offers and content sequence are now defined as concrete work items. The next gate is integration and publication, not further strategy design.</small>
+            </div>
+            <div class="matrix-row">
+              <strong>Partner / channel matrix</strong>
+              <span class="tag">Standardised</span>
+              <small>A reusable policy summary now separates early market-development cooperation from official or exclusive partner status and creates clearer rules for localisation discussions.</small>
             </div>
           </div>
         </section>
@@ -169,42 +194,48 @@
         <section class="panel">
           <h3>Key decisions</h3>
           <ul>
-            <li>Prioritise conversion infrastructure over expanding the research backlog.</li>
-            <li>Separate public EU prices, origin-market proxies, and quote-only competitors.</li>
-            <li>Position Y1 as a practical workflow pilot platform and DEX as a full-size research outcome platform.</li>
-            <li>Keep public logs free of customer names, confidential quotations, and unapproved product claims.</li>
+            <li>Robotics Hub will serve two primary audiences: European buyers evaluating deployment and robotics companies seeking European market entry.</li>
+            <li>The first commercial offers will be two POC products: an industrial workflow pilot and a university/research evaluation pilot.</li>
+            <li>Bob's personal LinkedIn should carry expert judgement and field observations; the Robotics Hub page should publish reusable frameworks and POC methods; the website should convert interest into assessed opportunities.</li>
+            <li>No new matrix should be created unless it directly improves a live proposal, meeting, qualification decision or repeatable workflow.</li>
           </ul>
         </section>
 
         <section class="panel">
           <h3>Blockers and risks</h3>
           <ul>
-            <li>Missing approved product specifications, EU pricing, CE/safety documentation, SDK/API clarity, and demo performance data.</li>
-            <li>CRM capacity and duplicated or invalid records are now operational bottlenecks.</li>
-            <li>Too many parallel strategic threads can dilute follow-through on proposals, purchase orders, and booked meetings.</li>
-            <li>Research outputs will not create revenue unless converted into reusable customer-facing packages.</li>
+            <li>Execution load is exceeding weekly capacity: many tasks were created, but too few were completed.</li>
+            <li>The website-to-HubSpot conversion loop has not yet been proven end to end.</li>
+            <li>Active deals do not yet have reliable next-activity dates, reducing forecast discipline.</li>
+            <li>Y1 still needs approved European commercial and compliance material before broad customer-facing release.</li>
+            <li>Parallel work on employment positioning, UBTECH sales and Robotics Hub can fragment focus unless outputs are consolidated into shared assets.</li>
           </ul>
         </section>
 
-        <section class="panel" id="priorities">
-          <h3>Next week’s three must-deliver items</h3>
+        <section class="panel wide" id="priorities">
+          <h3>Next week's three must-deliver items</h3>
           <ol class="priority">
-            <li><b>Ship one sales-ready Y1/DEX evidence pack.</b>Create an approved one-page comparison, package structure, required proof checklist, and a customer discovery template. Completion means it can be used in a real meeting without rewriting.</li>
-            <li><b>Recover control of the CRM.</b>Remove or quarantine invalid records, focus the active database on Europe and North America, and ensure every priority opportunity has a next action, owner, and date.</li>
-            <li><b>Turn the Robotics Hub strategy into an operating page.</b>Complete the Executive Summary web block and connect the business model to a simple weekly execution matrix for pipeline, pilots, funding, partners, and digital coworkers.</li>
+            <li><b>Launch the Robotics Hub conversion MVP.</b>Publish the homepage structure, lock the two-audience funnel, connect the branching assessment form to HubSpot, and complete one end-to-end test submission. Definition of done: a qualified visitor can enter, select the correct route, submit information and appear in the CRM with the right classification.</li>
+            <li><b>Ship two POC offers and start five qualified conversations.</b>Package one industrial Y1 workflow POC and one university/education evaluation POC, each with scope, prerequisites, deliverables, acceptance criteria and price logic. Use them to begin five logged conversations rather than publishing content without follow-up.</li>
+            <li><b>Restore CRM execution discipline.</b>Triage the overdue task backlog, give every active deal a dated next action, and move at least one opportunity to a documented commercial commitment, quotation decision or explicit no-go. Definition of done: no active opportunity is left without owner, next step and date.</li>
           </ol>
         </section>
 
-        <section class="panel">
+        <section class="panel wide">
           <h3>Protected research slot</h3>
-          <p><strong>Wednesday, 09:00–12:00:</strong> evidence-gap research only. No broad competitor expansion. The output should be missing official documentation, approved claims, pilot KPIs, and the exact materials required to move live opportunities forward.</p>
+          <p><strong>Wednesday, 22 July, 09:00–12:00:</strong> map the single Swedish entry route for a Robotics Hub POC. The output must identify one lead testbed or institution, one realistic funding route, the minimum consortium structure, and how the service can later be reused in other European markets. The calendar is currently clear for this window.</p>
         </section>
       </div>
 
       <div class="closing">
         <strong>Operating principle for the coming week:</strong><br />
-        Research is complete when it changes a customer conversation, a proposal, a decision, or a repeatable workflow.
+        Reduce the distance between research, customer action and commercial evidence. Finish the conversion loop before expanding the opportunity map.
       </div>
+
+      <details>
+        <summary>Previous entry · Week 28</summary>
+        <p>Week 28 established the competitor, price, CRM and Robotics Hub matrices. The main conclusion was that additional broad research had diminishing returns; the priority was to convert existing analysis into official evidence, customer-facing packages and a controlled execution system.</p>
+      </details>
     </article>
   </main>
 
