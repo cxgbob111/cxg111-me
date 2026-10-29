@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Bob Cheng's weekly development log: robotics market systems, sales operations, applied AI and the Robotics Hub." />
+  <meta name="description" content="Bob Cheng's research and development log: open robotics, European deployment decisions, market systems and applied AI." />
   <title>Bob Cheng — Dev Log</title>
   <style>
     :root {
@@ -111,6 +111,7 @@
     <nav>
       <a class="brand" href="#top">CXG111 / DEV LOG</a>
       <div class="nav-links">
+        <a href="#rp1-review">RP1 review</a>
         <a href="#progress">Progress</a>
         <a href="#priorities">Next week</a>
       </div>
@@ -125,12 +126,45 @@
     </div>
     <aside class="week-card">
       <span>Latest entry</span>
-      <strong>Week 29 · 2026</strong>
-      <span>13–17 July 2026</span>
+      <strong>RP1 research case note</strong>
+      <span>29 October 2026</span>
     </aside>
   </section>
 
   <main class="shell">
+
+    <article id="rp1-review" style="margin-bottom:28px">
+      <div class="article-head">
+        <div>
+          <div class="eyebrow">Research case note · 29 October 2026</div>
+          <h2>Open robots: turning published designs into a better buying decision</h2>
+        </div>
+        <div class="status">Desk review</div>
+      </div>
+      <p class="lede">What does open source change when a European team needs a robot to do useful work? I used RoboParty’s RP1 to examine the gap between access to engineering information and evidence for a delivered system.</p>
+      <div class="grid" style="margin-top:26px">
+        <section class="panel wide">
+          <h3>What I investigated</h3>
+          <p>I reviewed the official white paper and repositories, an attributed founder interview, and relevant European regulatory sources. The report separates documented statements, interview opinions and my engineering and commercial analysis.</p>
+          <p>One example: the white paper lists 44 N·m rated torque and 160 N·m peak torque for the RMM10062 module. The peak is neither a universal continuous joint rating nor a robot payload rating. Similarly, test hours accumulated across modules do not establish whole-system uptime.</p>
+          <p><a href="https://roboparty.com/downloads/rp1/white-paper-20261028-v1/RP1_White_Paper_CN.pdf#page=9" target="_blank" rel="noreferrer">Actuator table: white paper, p. 9</a> · <a href="https://roboparty.com/downloads/rp1/white-paper-20261028-v1/RP1_White_Paper_CN.pdf#page=41" target="_blank" rel="noreferrer">Reported testing: pp. 41–45</a></p>
+        </section>
+        <section class="panel">
+          <h3>The engineering lesson</h3>
+          <p>Connect each claim to a defined configuration, software revision, load and operating condition. Check component licences for the intended use, and identify which evidence remains missing.</p>
+        </section>
+        <section class="panel">
+          <h3>The commercial lesson</h3>
+          <p>Compare buying, building and commissioning over the same period. Include integration, calibration, spares, human intervention and support. Turn the intended workflow into measurable acceptance criteria before scaling.</p>
+        </section>
+      </div>
+      <div class="closing">
+        <strong>Explore the complete interactive review</strong>
+        <p>Inspect the sources, engineering diagrams and illustrative total-cost calculator. This is independent desk research; I have not physically tested RP1.</p>
+        <a href="https://roboticshub-rp1-engineering-review.bob-cheng.chatgpt.site?utm_source=personalwebsite&amp;utm_medium=referral&amp;utm_campaign=rp1_europe_2026_10&amp;utm_content=research_case_note" target="_blank" rel="noreferrer"><strong>Read “What RP1 Teaches Us About Delivering Open Robots in Europe” ↗</strong></a>
+      </div>
+    </article>
+
     <article>
       <div class="article-head">
         <div>
